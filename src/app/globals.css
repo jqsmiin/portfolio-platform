@@ -15,3 +15,26 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
+#nav {
+  padding: 0.5rem 1rem;
+}
+@media (min-width: 768px) {
+  #nav {
+    padding: 0.5rem 3rem;
+  }
+}
+@keyframes custom-bounce {
+  0% {
+    transform: translateX(-10px);
+  }
+  25% {
+    transform: translateX(-20px);
+  }
+  100% {
+    transform: translateX(-40px);
+  }
+}
+
+.animate-custom-bounce {
+  animation: custom-bounce 2s infinite;
+}
