@@ -38,3 +38,9 @@
 .animate-custom-bounce {
   animation: custom-bounce 2s infinite;
 }
+.before\:transition-transform::before {
+  background-color: #000;
+}
+.after\:transition-transform::after {
+  background-color: #000;
+}
