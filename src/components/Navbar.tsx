@@ -13,7 +13,6 @@ import {
   NavbarMenuItem,
   NavbarMenuToggle,
 } from "@nextui-org/react";
-import { AcmeLogo } from "./utils/Acme";
 import { usePathname } from "next/navigation";
 import logo from "@/images/mylogo.png";
 import Image from "next/image";
@@ -79,7 +78,7 @@ export default function App() {
           </Button>
         </NavbarItem>
       </NavbarContent>
-      <NavbarMenu>
+      <NavbarMenu className="mt-4 pt-4 gap-2">
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
             <Link

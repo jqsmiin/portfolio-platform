@@ -44,3 +44,25 @@
 .after\:transition-transform::after {
   background-color: #000;
 }
+.uploadButton {
+  pointer-events: none;
+  border: none !important;
+  padding: 6px 0 !important;
+}
+.uploadButton::-webkit-file-upload-button {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  color: #000;
+  background-color: #fff;
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
+  margin-right: 1rem;
+  pointer-events: all !important;
+  cursor: pointer;
+}
+.uploadButton::-webkit-file-upload-button:hover {
+  color: #fff;
+  background-color: #1f57c3;
+  border-color: #fff;
+  transition: 0.3s;
+}

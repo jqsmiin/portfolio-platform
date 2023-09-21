@@ -32,7 +32,7 @@ const Projects = () => {
           <div
             key={i}
             onClick={() => handleOpen()}
-            className="flex flex-col border border-solid border-gray-300 pb-[1.7rem] p-3 rounded-2xl cursor-pointer"
+            className="flex flex-col border border-solid border-[#ccc] pb-[1.7rem] p-3 rounded-2xl cursor-pointer"
           >
             <div>
               <img
@@ -43,7 +43,7 @@ const Projects = () => {
             </div>
             <div className="flex gap-4 pb-4 mt-4 justify-between items-center">
               <h3 className="text-xl font-bold">{project.projectTitle}</h3>
-              <div className="border border-solid py-1 px-3 border-gray-300 rounded-3xl">
+              <div className="border border-solid py-1 px-3 border-[#ccc] rounded-3xl">
                 <h3 className="text-secondaryColor font-bold">
                   {project.type}
                 </h3>
@@ -51,7 +51,7 @@ const Projects = () => {
             </div>
             <hr />
             <div className="mt-8 flex justify-between">
-              <h4 className="text-gray-400 text-sm">
+              <h4 className="text-[#a1a0a0] text-sm">
                 <span className="font-bold">Published:</span> {project.postedAt}
               </h4>
               <h4 className="text-gray-400 text-sm">{project.createdAt}</h4>
@@ -99,7 +99,7 @@ const Projects = () => {
                     <ul className="flex gap-4 flex-wrap">
                       {project.skills[0].split(",").map((skill, i) => (
                         <li
-                          className="border border-solid border-gray-400 px-3 py-1 rounded-2xl text-secondaryColor hover:text-white hover:bg-secondaryColor duration-200 cursor-default"
+                          className="border border-solid border-[#ccc] px-3 py-1 rounded-2xl text-secondaryColor hover:text-white hover:bg-secondaryColor duration-200 cursor-default"
                           key={i}
                         >
                           {skill.trim()}
@@ -114,7 +114,7 @@ const Projects = () => {
                   <ModalFooter>
                     <hr />
                     <div className="mt-4">
-                      <h4 className="text-gray-400 text-sm">
+                      <h4 className="text-[#ccc] text-sm">
                         {project.createdAt}
                       </h4>
                     </div>

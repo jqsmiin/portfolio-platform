@@ -14,7 +14,7 @@ const Filter = () => {
   };
   return (
     <section id="filter" className="w-70">
-      <div className="flex flex-col border border-solid border-gray-300 py-8">
+      <div className="flex flex-col border border-solid border-[#ccc] py-8">
         <div className="flex justify-around pl-0 items-center">
           <Avatar
             isBordered

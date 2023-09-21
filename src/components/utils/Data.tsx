@@ -72,3 +72,10 @@ export const projects = [
     githubUrl: "https://github.com/jqsmiin/job-hunt",
   },
 ];
+export const typeList = [
+  "MERN Application",
+  "Landing Page",
+  "CMS Development",
+  "PSD to HTML",
+  "SEO",
+];
