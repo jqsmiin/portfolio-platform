@@ -1,16 +1,37 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 import { Avatar, Checkbox, CheckboxGroup } from "@nextui-org/react";
 import { CustomCheckbox } from "./utils/CustomCheckBox";
 import { skills } from "./utils/Data";
 import { services } from "./utils/Data";
+import { ChangeEvent } from "react";
+import { useGlobalContext } from "./utils/store";
 
 const Filter = () => {
-  const [groupSelected, setGroupSelected] = useState([]);
+  const { groupSelected, setGroupSelected, setCheckBoxes, getAllProjects } =
+    useGlobalContext();
   const handleCheckboxChange = (selectedValues: any) => {
     setGroupSelected(selectedValues);
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedService = e.target.value;
+
+    // Check if the checkbox is checked or unchecked
+    if (e.target.checked) {
+      // If checked, add the selected service to the checkBoxes array
+      setCheckBoxes((prevCheckBoxes) => [...prevCheckBoxes, selectedService]);
+    } else {
+      // If unchecked, remove the selected service from the checkBoxes array
+      setCheckBoxes((prevCheckBoxes) =>
+        prevCheckBoxes.filter((service) => service !== selectedService)
+      );
+    }
+  };
+
+  const handleFilter = () => {
+    getAllProjects();
   };
   return (
     <section id="filter" className="w-70">
@@ -34,7 +55,12 @@ const Filter = () => {
           <h3 className="text-xl font-bold">Filter by type</h3>
           <div className="flex flex-wrap mt-6 gap-6">
             {services.map((service, i) => (
-              <Checkbox color="primary" key={i}>
+              <Checkbox
+                onChange={handleChange}
+                value={service}
+                color="primary"
+                key={i}
+              >
                 {service}
               </Checkbox>
             ))}
@@ -60,6 +86,14 @@ const Filter = () => {
               Selected: {groupSelected.join(", ")}
             </p>
           )}
+        </div>
+        <div className="mt-8 px-8">
+          <button
+            className="mr-4 bg-secondaryColor text-[#fff] px-4 py-2 rounded-md hover:text-secondaryColor hover:bg-[#fff] duration-300 border border-solid hover:border-secondaryColor"
+            onClick={handleFilter}
+          >
+            Apply Filter
+          </button>
         </div>
       </div>
     </section>

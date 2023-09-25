@@ -7,7 +7,8 @@ interface ProjectFilter {
     $in: string[];
   };
   skills?: {
-    $in: string[];
+    $regex: string[];
+    $options: string;
   };
 }
 
@@ -30,29 +31,44 @@ export const GET = async (req: NextRequest) => {
       const type = url.searchParams.get("type");
       const skills = url.searchParams.get("skills");
 
-      const filter: ProjectFilter = {};
+      // Fetch all projects from MongoDB
+      const allProjects = await Project.find().exec();
 
-      if (type) {
-        filter.type = { $in: type.split(",") };
-        console.log(type);
-      }
-      if (skills) {
-        const skillsArray = skills.split(",");
-        filter.skills = { $in: skillsArray };
-        console.log(skills);
-      }
-      console.log(filter);
+      // Filter the projects based on the skills and type parameters
+      const filteredProjects = allProjects.filter((project) => {
+        // Check if the project type matches the specified type (if type is specified)
 
-      const totalProjects = await Project.countDocuments();
-      const projects = await Project.find(filter).skip(skip).limit(PAGE_SIZE);
+        if (type) {
+          const projectTypes = project.type[0].split(","); // Assuming skills is an array with a single comma-separated string
+          const desiredTypes = type.split(",");
+          const hasAnyType = desiredTypes.some((desiredType) =>
+            projectTypes.includes(desiredType.trim())
+          );
+          if (!hasAnyType) {
+            return false;
+          }
+        }
 
-      console.log(projects);
+        // Check if the project has any of the specified skills (if skills are specified)
+        if (skills) {
+          const projectSkills = project.skills[0].split(","); // Assuming skills is an array with a single comma-separated string
+          const desiredSkills = skills.split(",");
+          const hasAnySkill = desiredSkills.some((desiredSkill) =>
+            projectSkills.includes(desiredSkill.trim())
+          );
+          if (!hasAnySkill) {
+            return false;
+          }
+        }
+
+        return true; // Include the project if it matches both type and skills criteria (or none if not specified)
+      });
 
       return NextResponse.json(
         {
-          length: projects.length,
-          totalPages: Math.ceil(totalProjects / PAGE_SIZE),
-          projects,
+          length: filteredProjects.length,
+          totalPages: Math.ceil(filteredProjects.length / PAGE_SIZE),
+          projects: filteredProjects.slice(skip, skip + PAGE_SIZE),
         },
         { status: 200 }
       );
@@ -73,6 +89,7 @@ export const GET = async (req: NextRequest) => {
     console.log(error);
   }
 };
+
 export const POST = async (req: NextRequest) => {
   try {
     await connect();

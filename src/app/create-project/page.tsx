@@ -1,16 +1,64 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs/app-beta/client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Input } from "@nextui-org/react";
 import { Textarea } from "@nextui-org/react";
 import { Select, SelectItem } from "@nextui-org/react";
 import { typeList } from "@/components/utils/Data";
+import "@uploadthing/react/styles.css";
+import { UploadButton } from "@/components/utils/uploadthing";
+import { UploadFileResponse } from "uploadthing/client";
+import { OurFileRouter } from "@/app/api/uploadthing/core";
+import { utapi } from "uploadthing/server";
 
-const page = () => {
+const CreateProject = () => {
   const { user } = useUser();
   const router = useRouter();
+  const [screens, setScreens] = useState<FileList | undefined>();
+  const [images, setImages] = useState<
+    {
+      fileUrl: string;
+      fileKey: string;
+    }[]
+  >([]);
+
+  const [type, setType] = useState("Landing Page");
+  const [formData, setFormData] = useState({
+    projectTitle: "",
+    skills: "",
+    postedAt: "",
+    githubUrl: "",
+    url: "",
+    description: "",
+  });
+
+  const { projectTitle, skills, postedAt, githubUrl, url, description } =
+    formData;
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value);
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+
+    if (e.target.files) {
+      setScreens(e.target.files);
+    }
+  };
+
+  const handleTypeChange = (selectedValue: string) => {
+    console.log(selectedValue);
+    setType(selectedValue);
+  };
+
+  const onSubmit = () => {
+    console.log(formData);
+    console.log(type);
+    console.log(screens);
+  };
 
   // useEffect(() => {
   //   if (user) {
@@ -22,6 +70,13 @@ const page = () => {
   //     }
   //   }
   // }, [user]);
+  async function uploadFiles(formData: FormData) {
+    const files = formData.getAll("files");
+    const response = await utapi.uploadFiles(files);
+
+    console.log(response);
+    //    ^? UploadedFileResponse[]
+  }
   return (
     <section
       id="create-page"
@@ -36,13 +91,25 @@ const page = () => {
             label="Project Title"
             variant="bordered"
             className="max-w-md"
+            name="projectTitle"
+            value={projectTitle}
+            onChange={handleChange}
           />
         </div>
         <div className="flex flex-col mt-4">
           <h3 className="font-bold mb-4">Type</h3>
-          <Select variant="bordered" label="Select a type" className="max-w-md">
+          <Select
+            variant="bordered"
+            name="type"
+            label="Select a type"
+            className="max-w-md"
+          >
             {typeList.map((data, i) => (
-              <SelectItem key={i} value={data}>
+              <SelectItem
+                onClick={() => handleTypeChange(data)}
+                key={i}
+                value={data}
+              >
                 {data}
               </SelectItem>
             ))}
@@ -55,11 +122,21 @@ const page = () => {
             label="Skills"
             variant="bordered"
             className="max-w-md"
+            name="skills"
+            value={skills}
+            onChange={handleChange}
           />
         </div>
         <div className="flex flex-col mt-4">
           <h3 className="font-bold mb-4">Posted At</h3>
-          <Input type="date" variant="bordered" className="max-w-md" />
+          <Input
+            type="date"
+            variant="bordered"
+            className="max-w-md"
+            name="postedAt"
+            value={postedAt}
+            onChange={handleChange}
+          />
         </div>
         <div className="flex flex-col mt-4">
           <h3 className="font-bold mb-4">Github Url</h3>
@@ -68,6 +145,9 @@ const page = () => {
             label="Github Url"
             variant="bordered"
             className="max-w-md"
+            name="githubUrl"
+            value={githubUrl}
+            onChange={handleChange}
           />
         </div>
         <div className="flex flex-col mt-4">
@@ -77,6 +157,9 @@ const page = () => {
             label="Url"
             variant="bordered"
             className="max-w-md"
+            name="url"
+            value={url}
+            onChange={handleChange}
           />
         </div>
         <div className="flex flex-col mt-4">
@@ -87,15 +170,37 @@ const page = () => {
             placeholder="Enter your description"
             className="max-w-md"
             minRows={10}
+            name="description"
+            value={description}
+            onChange={handleChange}
           />
         </div>
-        <div className="flex flex-col mt-4">
+        <div className="flex flex-col items-start mt-4">
           <h3 className="font-bold mb-4">Upload Photos</h3>
-          <input type="file" className="uploadButton" />
+          <UploadButton
+            endpoint="imageUploader"
+            onClientUploadComplete={(res) => {
+              // Do something with the response
+              console.log("Files: ", res);
+              alert("Upload Completed");
+            }}
+            onUploadError={(error: Error) => {
+              // Do something with the error.
+              alert(`ERROR! ${error.message}`);
+            }}
+          />
+        </div>
+        <div className="flex flex-col mt-4 items-baseline">
+          <button
+            className="mr-4 bg-secondaryColor text-[#fff] px-4 py-2 rounded-md hover:text-secondaryColor hover:bg-[#fff] duration-300 border border-solid hover:border-secondaryColor max-w-md w-full"
+            onClick={onSubmit}
+          >
+            Submit
+          </button>
         </div>
       </div>
     </section>
   );
 };
 
-export default page;
+export default CreateProject;
