@@ -10,7 +10,9 @@ export const skills = [
   "Bootstrap",
   "Typescript",
   "Responsive Design",
-  "SCSS",
+  "Sass",
+  "Firebase",
+  "React Redux",
 ];
 export const services = [
   "Landing Page",

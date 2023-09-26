@@ -9,74 +9,75 @@ import { Select, SelectItem } from "@nextui-org/react";
 import { typeList } from "@/components/utils/Data";
 import "@uploadthing/react/styles.css";
 import { UploadButton } from "@/components/utils/uploadthing";
-import { UploadFileResponse } from "uploadthing/client";
-import { OurFileRouter } from "@/app/api/uploadthing/core";
-import { utapi } from "uploadthing/server";
 
 const CreateProject = () => {
   const { user } = useUser();
   const router = useRouter();
-  const [screens, setScreens] = useState<FileList | undefined>();
-  const [images, setImages] = useState<
-    {
-      fileUrl: string;
-      fileKey: string;
-    }[]
-  >([]);
+  const [screens, setScreens] = useState<FileList[] | undefined | string>("");
 
   const [type, setType] = useState("Landing Page");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleTypeChange = (selectedValue: string) => {
+    setType(selectedValue);
+  };
+
   const [formData, setFormData] = useState({
     projectTitle: "",
     skills: "",
     postedAt: "",
     githubUrl: "",
     url: "",
-    description: "",
+    desc: "",
+    type: type,
+    screens: screens,
   });
 
-  const { projectTitle, skills, postedAt, githubUrl, url, description } =
-    formData;
+  const { projectTitle, skills, postedAt, githubUrl, url, desc } = formData;
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-
-    if (e.target.files) {
-      setScreens(e.target.files);
-    }
-  };
-
-  const handleTypeChange = (selectedValue: string) => {
-    console.log(selectedValue);
-    setType(selectedValue);
-  };
+  useEffect(() => {
+    setFormData({
+      ...formData, // Copy the existing formData
+      type: type, // Update the type property with the new value
+      screens: screens,
+    });
+  }, [type, screens]);
 
   const onSubmit = () => {
     console.log(formData);
-    console.log(type);
-    console.log(screens);
+
+    const createProject = async () => {
+      const res = await fetch("http://localhost:3000/api/projects", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+
+      console.log("Data", data);
+    };
+
+    createProject();
   };
 
-  // useEffect(() => {
-  //   if (user) {
-  //     // Check if user is defined
-  //     const role = user.publicMetadata?.role;
-  //     if (role !== "admin") {
-  //       // Delay the redirection by wrapping it in a setTimeout
-  //       router.push("/");
-  //     }
-  //   }
-  // }, [user]);
-  async function uploadFiles(formData: FormData) {
-    const files = formData.getAll("files");
-    const response = await utapi.uploadFiles(files);
-
-    console.log(response);
-    //    ^? UploadedFileResponse[]
-  }
+  useEffect(() => {
+    if (user) {
+      // Check if user is defined
+      const role = user.publicMetadata?.role;
+      if (role !== "admin") {
+        // Delay the redirection by wrapping it in a setTimeout
+        router.push("/");
+      }
+    }
+  }, [user]);
   return (
     <section
       id="create-page"
@@ -170,8 +171,8 @@ const CreateProject = () => {
             placeholder="Enter your description"
             className="max-w-md"
             minRows={10}
-            name="description"
-            value={description}
+            name="desc"
+            value={desc}
             onChange={handleChange}
           />
         </div>
@@ -181,6 +182,10 @@ const CreateProject = () => {
             endpoint="imageUploader"
             onClientUploadComplete={(res) => {
               // Do something with the response
+              const urls = res?.map((item) => item.url);
+
+              setScreens(urls?.join(", "));
+
               console.log("Files: ", res);
               alert("Upload Completed");
             }}

@@ -32,7 +32,7 @@ export default function NavbarComponent() {
             className="sm:hidden"
           />
           <NavbarBrand>
-            <Image alt="logo" height={90} width={90} src={logo} />
+            <Image alt="logo" height={90} width={90} priority src={logo} />
           </NavbarBrand>
         </NavbarContent>
 
@@ -48,6 +48,24 @@ export default function NavbarComponent() {
               <NavbarItem>
                 <Link href="/projects" color="foreground">
                   Projects
+                </Link>
+              </NavbarItem>
+            </>
+          ) : pathName === "/create-project" ? (
+            <>
+              <NavbarItem>
+                <Link href="/" color="foreground">
+                  Home
+                </Link>
+              </NavbarItem>
+              <NavbarItem>
+                <Link href="/projects" aria-current="page">
+                  Projects
+                </Link>
+              </NavbarItem>
+              <NavbarItem isActive>
+                <Link href="/create-project" aria-current="page">
+                  Create Project
                 </Link>
               </NavbarItem>
             </>
@@ -84,10 +102,10 @@ export default function NavbarComponent() {
             <NavbarMenuItem key={`${item}-${index}`}>
               <Link
                 color={
-                  index === 2
+                  index === 0
                     ? "primary"
                     : index === menuItems.length - 1
-                    ? "danger"
+                    ? "primary"
                     : "foreground"
                 }
                 className="w-full"

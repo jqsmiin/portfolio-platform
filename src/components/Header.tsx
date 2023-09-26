@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { BsArrowUpRight } from "react-icons/bs";
 import marketing from "@/images/marketing.png";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from "react";
@@ -124,13 +124,14 @@ const Header = () => {
             alt="animate icon"
             className="absolute animate-bounce animate-duration-1000"
           />
-          <Image
-            src={marketing}
-            layout="responsive"
-            height={300}
-            width={300}
-            alt="marketing"
-          />
+          <div className="w-full h-full pt-12">
+            <Image
+              src={marketing}
+              layout="responsive"
+              priority
+              alt="marketing"
+            />
+          </div>
           <motion.div
             className="absolute top-0"
             animate={{

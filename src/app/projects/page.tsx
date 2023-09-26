@@ -7,7 +7,7 @@ const page = () => {
       id="projects"
       className="container mx-auto px-6 mt-2 lg:mt-10 mb-12"
     >
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="hidden md:block col-span-1 md:col-span-1">
           <Filter />
         </div>
@@ -20,4 +20,3 @@ const page = () => {
 };
 
 export default page;
-// style={{ gridTemplateColumns: "1.5fr 3fr" }}

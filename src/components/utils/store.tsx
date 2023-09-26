@@ -7,31 +7,15 @@ import {
   SetStateAction,
   useState,
 } from "react";
-
-type Check = string[];
-
-type Project = {
-  createdAt: string;
-  desc: string;
-  githubUrl: string;
-  postedAt: string;
-  projectTitle: string;
-  screens: string[];
-  skills: string[];
-  type: string[];
-  updatedAt: string;
-  url: string;
-  __v: number;
-  _id: string;
-};
+import { ProjectType } from "./DataTypes";
 
 interface ContextProps {
-  projectsData: Project[];
-  setProjectsData: Dispatch<SetStateAction<Project[]>>;
+  projectsData: ProjectType[];
+  setProjectsData: Dispatch<SetStateAction<ProjectType[]>>;
   getAllProjects: () => Promise<void>;
   currentPage: number;
   setCurrentPage: Dispatch<SetStateAction<number>>;
-  checkBoxes: Check;
+  checkBoxes: string[];
   setCheckBoxes: Dispatch<SetStateAction<string[]>>;
   groupSelected: string[];
   setGroupSelected: Dispatch<SetStateAction<never[]>>;
@@ -41,7 +25,7 @@ interface ContextProps {
 
 const GlobalContext = createContext<ContextProps>({
   projectsData: [],
-  setProjectsData: (): Project[] => [],
+  setProjectsData: (): ProjectType[] => [],
   getAllProjects: async () => {},
   currentPage: 1,
   setCurrentPage: () => {},
@@ -57,7 +41,7 @@ export const GlobalContextProvider = ({ children }: any) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [checkBoxes, setCheckBoxes] = useState<string[]>([]);
   const [groupSelected, setGroupSelected] = useState([]);
-  const [projectsData, setProjectsData] = useState<[] | Project[]>([]);
+  const [projectsData, setProjectsData] = useState<[] | ProjectType[]>([]);
   const [loading, setLoading] = useState(false);
 
   const getAllProjects = async () => {
