@@ -7,13 +7,21 @@ import { useGlobalContext } from "./utils/store";
 import LoadingSpinner from "./utils/Spinner";
 import ModalComponent from "./Modal";
 import { ProjectType } from "./utils/DataTypes";
+import { Pagination } from "@nextui-org/react";
 
 const Projects = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [backdrop, setBackdrop] = useState("blur");
   const [modalLoading, setModalLoading] = useState(true);
   const [projectDetail, setProjectDetail] = useState<ProjectType>();
-  const { getAllProjects, projectsData, loading } = useGlobalContext();
+  const {
+    getAllProjects,
+    projectsData,
+    loading,
+    setCurrentPage,
+    totalPages,
+    currentPage,
+  } = useGlobalContext();
 
   const handleOpen = (id: string) => {
     setBackdrop("blur");
@@ -32,7 +40,12 @@ const Projects = () => {
 
   useEffect(() => {
     getAllProjects();
-  }, []);
+  }, [currentPage]);
+
+  const handleChange = (newPage: number) => {
+    console.log(newPage);
+    setCurrentPage(newPage);
+  };
 
   if (loading || projectsData.length === 0) {
     return (
@@ -50,7 +63,7 @@ const Projects = () => {
             <div
               key={i}
               onClick={() => handleOpen(project._id)}
-              className="flex flex-col border border-solid border-[#ccc] pb-[1.7rem] p-3 rounded-2xl cursor-pointer"
+              className="flex flex-col border border-solid border-[#ccc] pb-[1.7rem] p-3 rounded-2xl cursor-pointer md:w-auto"
             >
               <div>
                 <img
@@ -77,7 +90,7 @@ const Projects = () => {
                   <span className="font-bold">Published:</span>{" "}
                   {project.postedAt as string}
                 </h4>
-                <h4 className="text-gray-400 text-sm">
+                <h4 className="text-[#a1a0a0] text-sm">
                   {typeof project.postedAt === "string" &&
                     (project.postedAt.split("-")[0] as string)}
                 </h4>
@@ -96,6 +109,14 @@ const Projects = () => {
         ) : (
           ""
         )}
+        <div className="flex justify-center"></div>
+      </div>
+      <div className="flex justify-center mt-4">
+        <Pagination
+          total={totalPages}
+          initialPage={currentPage}
+          onChange={handleChange}
+        />
       </div>
     </section>
   );

@@ -21,6 +21,8 @@ interface ContextProps {
   setGroupSelected: Dispatch<SetStateAction<never[]>>;
   loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
+  totalPages: number;
+  setTotalPages: Dispatch<SetStateAction<number>>;
 }
 
 const GlobalContext = createContext<ContextProps>({
@@ -29,6 +31,8 @@ const GlobalContext = createContext<ContextProps>({
   getAllProjects: async () => {},
   currentPage: 1,
   setCurrentPage: () => {},
+  totalPages: 1,
+  setTotalPages: () => {},
   checkBoxes: [],
   setCheckBoxes: () => {},
   groupSelected: [],
@@ -39,6 +43,7 @@ const GlobalContext = createContext<ContextProps>({
 
 export const GlobalContextProvider = ({ children }: any) => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
   const [checkBoxes, setCheckBoxes] = useState<string[]>([]);
   const [groupSelected, setGroupSelected] = useState([]);
   const [projectsData, setProjectsData] = useState<[] | ProjectType[]>([]);
@@ -46,7 +51,7 @@ export const GlobalContextProvider = ({ children }: any) => {
 
   const getAllProjects = async () => {
     const res = await fetch(
-      `/api/projects?type=${checkBoxes}&skills=${groupSelected}`
+      `/api/projects?type=${checkBoxes}&skills=${groupSelected}&page=${currentPage}`
     );
 
     setLoading(true);
@@ -54,6 +59,7 @@ export const GlobalContextProvider = ({ children }: any) => {
     const data = await res.json();
 
     setProjectsData(data.projects);
+    setTotalPages(data.totalPages);
     setLoading(false);
   };
 
@@ -71,6 +77,8 @@ export const GlobalContextProvider = ({ children }: any) => {
         getAllProjects,
         loading,
         setLoading,
+        totalPages,
+        setTotalPages,
       }}
     >
       {children}

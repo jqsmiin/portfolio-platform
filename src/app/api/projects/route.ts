@@ -21,7 +21,7 @@ export const GET = async (req: NextRequest) => {
     const searchParams = url.searchParams;
     const page = url.searchParams.get("page");
     const pageSize = url.searchParams.get("pageSize");
-    const PAGE_SIZE = Number(pageSize) || 1000;
+    const PAGE_SIZE = Number(pageSize) || 4;
     const pageNum = Number(page) || 1;
     const skip = (pageNum - 1) * PAGE_SIZE;
 
@@ -64,6 +64,8 @@ export const GET = async (req: NextRequest) => {
         return true; // Include the project if it matches both type and skills criteria (or none if not specified)
       });
 
+      console.log(PAGE_SIZE);
+
       return NextResponse.json(
         {
           length: filteredProjects.length,
@@ -75,6 +77,8 @@ export const GET = async (req: NextRequest) => {
     } else {
       const totalProjects = await Project.countDocuments();
       const projects = await Project.find().skip(skip).limit(PAGE_SIZE);
+
+      console.log(PAGE_SIZE);
 
       return NextResponse.json(
         {
