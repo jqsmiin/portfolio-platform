@@ -16,11 +16,11 @@ import {
 import { usePathname } from "next/navigation";
 import logo from "@/images/mylogo.png";
 import Image from "next/image";
+import { menuItems } from "./utils/Data";
 
 export default function NavbarComponent() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-  const menuItems = ["Home", "Projects"];
   const pathName = usePathname();
 
   return (
@@ -59,9 +59,7 @@ export default function NavbarComponent() {
                 </Link>
               </NavbarItem>
               <NavbarItem>
-                <Link href="/projects" aria-current="page">
-                  Projects
-                </Link>
+                <Link href="/projects">Projects</Link>
               </NavbarItem>
               <NavbarItem isActive>
                 <Link href="/create-project" aria-current="page">
@@ -99,20 +97,14 @@ export default function NavbarComponent() {
         </NavbarContent>
         <NavbarMenu className="mt-4 pt-4 gap-2">
           {menuItems.map((item, index) => (
-            <NavbarMenuItem key={`${item}-${index}`}>
+            <NavbarMenuItem key={`${item.id}`}>
               <Link
-                color={
-                  index === 0
-                    ? "primary"
-                    : index === menuItems.length - 1
-                    ? "primary"
-                    : "foreground"
-                }
+                color={item.path === pathName ? "primary" : "foreground"}
                 className="w-full"
-                href={item === "Home" ? "/" : "/projects"}
+                href={item.name === "Home" ? "/" : "/projects"}
                 size="lg"
               >
-                {item}
+                {item.name}
               </Link>
             </NavbarMenuItem>
           ))}

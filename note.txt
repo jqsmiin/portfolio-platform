@@ -1,8 +1,0 @@
-1. Na projects stranici iskoristiti GET metod da dobijem sve podatke;
-2. Namjestiti filter, i GET by ID metod;
-3. Na create-projects stranici omoguciti postavljanje projekta.
-
-3. 
-Namjestiti sve inpute tako da imam sve vrijednosti
-Namjestiti uploadthing tako da mogu uploudati slike
-Napraviti POST metodu i poslati sve podatke

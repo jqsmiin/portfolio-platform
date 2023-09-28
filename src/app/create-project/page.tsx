@@ -50,8 +50,6 @@ const CreateProject = () => {
   }, [type, screens]);
 
   const onSubmit = () => {
-    console.log(formData);
-
     const createProject = async () => {
       const res = await fetch("http://localhost:3000/api/projects", {
         method: "POST",
@@ -61,8 +59,9 @@ const CreateProject = () => {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-
-      console.log("Data", data);
+      if (data) {
+        router.push("/projects");
+      }
     };
 
     createProject();

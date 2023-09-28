@@ -64,8 +64,6 @@ export const GET = async (req: NextRequest) => {
         return true; // Include the project if it matches both type and skills criteria (or none if not specified)
       });
 
-      console.log(PAGE_SIZE);
-
       return NextResponse.json(
         {
           length: filteredProjects.length,
@@ -77,8 +75,6 @@ export const GET = async (req: NextRequest) => {
     } else {
       const totalProjects = await Project.countDocuments();
       const projects = await Project.find().skip(skip).limit(PAGE_SIZE);
-
-      console.log(PAGE_SIZE);
 
       return NextResponse.json(
         {

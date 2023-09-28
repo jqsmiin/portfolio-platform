@@ -43,11 +43,10 @@ const Projects = () => {
   }, [currentPage]);
 
   const handleChange = (newPage: number) => {
-    console.log(newPage);
     setCurrentPage(newPage);
   };
 
-  if (loading || projectsData.length === 0) {
+  if (loading) {
     return (
       <>
         <LoadingSpinner />
@@ -58,7 +57,7 @@ const Projects = () => {
     <section id="projects" className="flex flex-col">
       <h3 className="text-xl font-bold">All Projects</h3>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
-        {projectsData &&
+        {projectsData && projectsData.length > 0 ? (
           projectsData.map((project, i) => (
             <div
               key={i}
@@ -96,7 +95,12 @@ const Projects = () => {
                 </h4>
               </div>
             </div>
-          ))}
+          ))
+        ) : (
+          <>
+            <h3>Upcoming...</h3>
+          </>
+        )}
         {isOpen && backdrop == "blur" ? (
           <>
             <ModalComponent
@@ -111,13 +115,15 @@ const Projects = () => {
         )}
         <div className="flex justify-center"></div>
       </div>
-      <div className="flex justify-center mt-4">
-        <Pagination
-          total={totalPages}
-          initialPage={currentPage}
-          onChange={handleChange}
-        />
-      </div>
+      {projectsData.length > 1 && (
+        <div className="flex justify-center mt-4">
+          <Pagination
+            total={totalPages}
+            initialPage={currentPage}
+            onChange={handleChange}
+          />
+        </div>
+      )}
     </section>
   );
 };

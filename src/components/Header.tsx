@@ -74,7 +74,7 @@ const Header = () => {
             className="flex gap-4 mt-12"
           >
             <Link
-              className="px-5 py-2 rounded-[23px] hover:text-white bg-white duration-300 border-2 border-solid border-primaryColor hover:bg-primaryColor"
+              className="px-5 py-2 rounded-[23px] hover:text-[#fff] bg-[#fff] duration-300 border-2 border-solid border-primaryColor hover:bg-primaryColor"
               href="https://www.upwork.com/freelancers/~01ba206336c9c09675"
             >
               Contact Me

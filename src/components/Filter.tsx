@@ -9,8 +9,13 @@ import { ChangeEvent } from "react";
 import { useGlobalContext } from "./utils/store";
 
 const Filter = () => {
-  const { groupSelected, setGroupSelected, setCheckBoxes, getAllProjects } =
-    useGlobalContext();
+  const {
+    groupSelected,
+    setGroupSelected,
+    setCheckBoxes,
+    getAllProjects,
+    setCurrentPage,
+  } = useGlobalContext();
   const handleCheckboxChange = (selectedValues: any) => {
     setGroupSelected(selectedValues);
   };
@@ -31,6 +36,7 @@ const Filter = () => {
   };
 
   const handleFilter = () => {
+    setCurrentPage(1);
     getAllProjects();
   };
   return (

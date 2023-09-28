@@ -81,3 +81,15 @@ export const typeList = [
   "PSD to HTML",
   "SEO",
 ];
+export const menuItems = [
+  {
+    id: 1,
+    path: "/",
+    name: "Home",
+  },
+  {
+    id: 2,
+    path: "/projects",
+    name: "Projects",
+  },
+];
