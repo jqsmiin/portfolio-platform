@@ -47,6 +47,8 @@ const CreateProject = () => {
       type: type, // Update the type property with the new value
       screens: screens,
     });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type, screens]);
 
   const onSubmit = () => {
@@ -76,6 +78,7 @@ const CreateProject = () => {
         router.push("/");
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
   return (
     <section

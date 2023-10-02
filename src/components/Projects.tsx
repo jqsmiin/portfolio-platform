@@ -40,6 +40,8 @@ const Projects = () => {
 
   useEffect(() => {
     getAllProjects();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
   const handleChange = (newPage: number) => {
